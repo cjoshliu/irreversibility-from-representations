@@ -1,4 +1,4 @@
-# Irreversibility from representations [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/cjoshliu/vae-irreversibility/blob/master/LICENSE) [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/release/python-390/)
+# Irreversibility from representations [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/cjoshliu/irreversibility-from-representations/blob/master/LICENSE) [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/release/python-390/)
 
 This repository contains code for simulating complex Ginzburg-Landau (CGL) phase fields, training models to represent CGL and Rho dynamics in a low-dimensional latent space, and bounding irreversibility from latent-space representations using the Ziv-Merhav estimator.
 It is based on [simulator code by David M. Winterbottom](https://github.com/codeinthehole/codeinthehole.com/blob/58ad3d28ddefb64350ec883b291d4dbe1df096f7/www/static/tutorial/files/CGLsim2D.m) and [VAE code by Yann Dubois](https://github.com/YannDubs/disentangling-vae).
