@@ -45,7 +45,7 @@ Results are generated in `results`, but should be saved to `postprocessing/full_
 
 ### Output
 * `model.pt`: Model at the end of training. 
-* `model-i.pt`: Model checkpoint after `i` iterations. By default saves every 100.
+* `model-i.pt`: Model checkpoint after `<i>` iterations. By default saves every 100.
 * `specs.json`: The parameters used to run the program (default and modified with CLI).
 * `training.gif`: GIF of latent traversals of the latent dimensions z at each epoch of training.
 * `train_losses.log`: All (sub-)losses computed during training.
@@ -60,7 +60,7 @@ Run `postprocessing/ZMEstimator.m` on `postprocessing/full_results/<model-name>/
 
 ## Plot
 
-Run `python main_viz.py <model_name> <plot_types> <param>` to plot using pretrained models in `results`. For example:
+Run `python main_viz.py <model-name> <plot-types> <param>` to plot using pretrained models in `results`. For example:
 ```
 python main_viz.py example_model_name all -c 7
 ```
