@@ -23,7 +23,7 @@ Table of Contents:
 # clone repo
 cd /path/to/repo
 mkdir -p {data/cgle64,results/discont_encode,postprocessing/full_results}
-# set up and activate virtual environment
+# set up and activate environment
 pip install -r requirements.txt
 ```
 
