@@ -29,7 +29,7 @@ pip install -r requirements.txt
 
 ## Preprocess
 [Training data](ADD ZENODO DOI) are deposited on Zenodo and should be unzipped and saved to `preprocessing/datasets` before running.
-Alternatively, run `preprocessing/SimCGL.m` to generate your own simulation videos.
+Alternatively, use `preprocessing/SimCGL.m` to generate your own simulation videos.
 Next, modify the first cell of `preprocessing/vid_to_dset.ipynb` to segment your videos into datasets containing two-frame segments.
 
 ## Train
