@@ -6,7 +6,7 @@ It is based on [simulator code by David M. Winterbottom](https://github.com/code
 The simulator uses methods described in ["Exponential time differencing for stiff systems"](https://doi.org/10.1006/jcph.2002.6995).
 The default VAE uses architecture and loss described in ["Understanding disentangling in β-VAE"](https://arxiv.org/abs/1804.03599) and ["Disentangling by factorising,"](https://arxiv.org/abs/1802.05983) respectively.
 However, additional losses are implemented.
-The ZM estimator uses methods described in ["Entropy production and Kullback-Leibler divergence between stationary trajectories of discrete systems"](https://doi.org/10.1103/PhysRevE.85.031129).
+The ZM estimator uses methods described in ["Entropy production and Kullback-Leibler divergence between stationary trajectories of discrete systems."](https://doi.org/10.1103/PhysRevE.85.031129)
 
 Table of Contents:
 1. [Install](#install)
