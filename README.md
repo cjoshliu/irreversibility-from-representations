@@ -55,7 +55,7 @@ Results are generated in `results`, but should be saved to `postprocessing/full_
 * `latent_means.csv`: Model-generated latent means for each observation in training set. These can be used as Ziv-Merhav irreversibility-estimator inputs.
 
 ## Postprocess
-Run `postprocessing/ZMEstimator.m` on `postprocessing/full_results/<model-name>/latent_means.csv` to estimate irreversibility from a latent-space representation.
+Run `postprocessing/kld_compression_lipschitz.m` to estimate irreversibilities from model latent means and training videos. Add the helper functions in `postprocessing/compress_label.m` and `postprocessing/cross_parsing_label.m` to your filepath.
 
 ## Plot
 
