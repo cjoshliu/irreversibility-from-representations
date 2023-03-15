@@ -12,8 +12,8 @@ Table of Contents:
 1. [Install](#install)
 2. [Preprocess](#preprocess)
 3. [Train](#train)
-4. [Postprocess](#postprocess)
-5. [Plot](#plot)
+4. [Plot](#plot)
+5. [Postprocess](#postprocess)
 6. [Examples](#examples)
 7. [Help](#help)
 
@@ -54,16 +54,15 @@ Results are generated in `results`, but should be saved to `postprocessing/full_
 * `latent_logvars.csv`: Model-generated latent log-variances for each observation in training set.
 * `latent_means.csv`: Model-generated latent means for each observation in training set. These can be used as Ziv-Merhav irreversibility-estimator inputs.
 
-## Postprocess
-Run `postprocessing/kld_compression_lipschitz.m` to estimate irreversibilities from model latent means and training videos. Add the helper functions in `postprocessing/compress_label.m` and `postprocessing/cross_parsing_label.m` to your filepath.
-
 ## Plot
-
 Run `python main_viz.py <model-name> <plot-types> <param>` to plot using pretrained models in `results`. For example:
 ```
 python main_viz.py example_model_name all -c 7
 ```
 This will save plots in the model directory `results/example_model_name`.
+
+## Postprocess
+Run `postprocessing/kld_compression_lipschitz.m` to estimate irreversibilities from model latent means and training videos. Add the helper functions in `postprocessing/compress_label.m` and `postprocessing/cross_parsing_label.m` to your filepath.
 
 ## Examples
 Each script in `bin` runs a predefined experiment and saves to `postprocessing/full_results`:
