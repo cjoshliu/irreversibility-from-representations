@@ -27,7 +27,7 @@ pip install -r requirements.txt
 ```
 
 ## Preprocess
-[Training data](https://doi.org/10.5281/zenodo.7734340) are deposited on Zenodo as `datasets.zip`, which should be extracted to `preprocessing/datasets` before running scripts in `bin`.
+[Training data](https://doi.org/10.5281/zenodo.7734340) are deposited on Zenodo as `datasets.zip`, which should be extracted to `preprocessing/datasets` before running scripts included in `bin`.
 Alternatively, use `preprocessing/SimCGL.m` to generate your own simulation videos.
 Next, modify the first cell of `preprocessing/vid_to_dset.ipynb` to segment your videos into datasets containing two-frame segments.
 
