@@ -3,7 +3,7 @@
 This repository contains code for simulating complex Ginzburg-Landau (CGL) phase fields, training models to represent CGL and Rho dynamics in a low-dimensional latent space, and bounding irreversibility from latent-space representations using the Ziv-Merhav estimator.
 It is modified from [simulator code by David M. Winterbottom](https://github.com/codeinthehole/codeinthehole.com/blob/58ad3d28ddefb64350ec883b291d4dbe1df096f7/www/static/tutorial/files/CGLsim2D.m) and [VAE code by Yann Dubois](https://github.com/YannDubs/disentangling-vae).
 
-The simulator uses methods described in ["Exponential time differencing for stiff systems"](https://doi.org/10.1006/jcph.2002.6995).
+The simulator uses methods described in ["Exponential time differencing for stiff systems."](https://doi.org/10.1006/jcph.2002.6995)
 The default VAE uses architecture and loss described in ["Understanding disentangling in β-VAE"](https://arxiv.org/abs/1804.03599) and ["Disentangling by factorising,"](https://arxiv.org/abs/1802.05983) respectively.
 However, additional losses are implemented.
 The ZM estimator uses methods described in ["Entropy production and Kullback-Leibler divergence between stationary trajectories of discrete systems."](https://doi.org/10.1103/PhysRevE.85.031129)
