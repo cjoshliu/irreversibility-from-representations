@@ -62,7 +62,8 @@ python main_viz.py example_model_name all -c 7
 This will save plots in the model directory `results/example_model_name`.
 
 ## Postprocess
-Run `postprocessing/kld_compression_lipschitz.m` to estimate irreversibilities from model latent means and training videos. Add the helper functions in `postprocessing/compress_label.m` and `postprocessing/cross_parsing_label.m` to your filepath.
+Run `postprocessing/kld_compression_lipschitz.m` to estimate irreversibilities from model latent means and training videos using a Ziv-Merhav estimator.
+Add the helper functions in `postprocessing/compress_label.m` and `postprocessing/cross_parsing_label.m` to your filepath.
 
 ## Examples
 Each script in `bin` runs a predefined experiment and saves to `postprocessing/full_results`:
