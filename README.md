@@ -62,13 +62,13 @@ python main_viz.py example_model_name all -c 7
 This will save plots in the model directory `results/example_model_name`.
 
 ## Postprocess
-Run `postprocessing/kld_compression_lipschitz.m` to estimate irreversibilities from model latent means and training videos using a Ziv-Merhav estimator.
 Add the helper functions in `postprocessing/compress_label.m` and `postprocessing/cross_parsing_label.m` to your filepath.
+Run `postprocessing/kld_compression_lipschitz.m` to estimate irreversibilities from model latent means and training videos using a Ziv-Merhav estimator.
 
 ## Examples
 Each script in `bin` runs a predefined experiment and saves to `postprocessing/full_results`:
 * `test_cases.sh`: Checks installation.
-Each of three results should have a name that describes `<name>/trajectory.png`.
+Each of three results should have a model name that describes `postprocessing/full_results/<model-name>/trajectory.png`.
 * `sim_tstep_vary.sh`, `sim_regime_vary.sh`, `exp_regime_vary.sh`: Replicate main results.
 * `sim_hp_vary.sh`, `exp_hp_vary.sh`: Replicate results used for hyperparameter tuning.
 * [Pre-trained results](https://doi.org/10.5281/zenodo.7734340) are deposited on Zenodo as `full_results.zip`.
