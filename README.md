@@ -27,7 +27,7 @@ pip install -r requirements.txt
 ```
 
 ## Preprocess
-[Training data](https://doi.org/10.5281/zenodo.7734340) are deposited on Zenodo as `datasets.zip`, which should be extracted to `preprocessing/datasets` before running scripts included in `bin`.
+[Training data](https://doi.org/10.5281/zenodo.7734339) are deposited on Zenodo as `datasets.zip`, which should be extracted to `preprocessing/datasets` before running scripts included in `bin`.
 Alternatively, use `preprocessing/SimCGL.m` to generate your own simulation videos.
 Next, modify the first cell of `preprocessing/vid_to_dset.ipynb` to segment your videos into datasets containing two-frame segments.
 
@@ -71,7 +71,7 @@ Each script in `bin` runs a predefined experiment and saves to `postprocessing/f
 Each of three results should have a model name that describes `postprocessing/full_results/<model-name>/trajectory.png`.
 * `sim_tstep_vary.sh`, `sim_regime_vary.sh`, `exp_regime_vary.sh`: Replicate main results.
 * `sim_hp_vary.sh`, `exp_hp_vary.sh`: Replicate results used for hyperparameter tuning.
-* [Pre-trained results](https://doi.org/10.5281/zenodo.7734340) are deposited on Zenodo as `full_results.zip`.
+* [Pre-trained results](https://doi.org/10.5281/zenodo.7734339) are deposited on Zenodo as `full_results.zip`.
 
 ## Help
 ```
