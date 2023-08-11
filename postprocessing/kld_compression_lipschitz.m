@@ -1,10 +1,10 @@
 close all; clear all; clc
 
 %% Change these based on which experiment you are analyzing
-latent_path = ''; % path to CSV of latent means
-image_path = ''; % path to raw data TIFF phase field
-ruler_path = ''; % path to ruler TIFF
-save_path = ''; % path to save ZM estimate and half-correction
+latent_path = '/path/to/latent_means.csv';
+image_path = '/path/to/phase_field_video.tif';
+ruler_path = '/path/to/ruler.tif';
+save_path = '/dir/to/save/zm/estimates/';
 frame_rate = 1; % frame rate of TIFF phase field in Hz
 coarse_para = 1; % coarse-graining kernel size
 parsed_length = 10000; % maximum length to parse
