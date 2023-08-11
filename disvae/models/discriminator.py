@@ -1,5 +1,5 @@
 """
-Module containing FVAE discriminator MLP.
+Module containing multilayer-perceptron discriminator of factorizing VAE.
 """
 from torch import nn
 from disvae.utils.initialization import weights_init
@@ -10,29 +10,31 @@ class Discriminator(nn.Module):
                  neg_slope=0.2,
                  latent_dim=2,
                  hidden_units=1000):
-        """Discriminator proposed in [1].
+        """
+        Discriminator proposed in [1].
 
         Parameters
         ----------
         neg_slope: float
-            Hyperparameter for the Leaky ReLu
+            Leaky ReLu negative slope.
 
         latent_dim : int
             Dimensionality of latent variables.
 
         hidden_units: int
-            Number of hidden units in the MLP
+            Number of hidden units.
 
-        Model Architecture
+        Architecture
         ------------
         - 6 layer multi-layer perceptron, each with 1000 hidden units
         - Leaky ReLu activations
-        - Output 2 logits
+        - Output 2 "logits" (unnormalized log-probabilities)
 
-        References:
-            [1] Kim, Hyunjik, and Andriy Mnih. "Disentangling by factorising."
-            arXiv preprint arXiv:1802.05983 (2018).
-
+        Reference
+        ---------
+        [1] H Kim and A Mnih. "Disentangling by factorising,"
+            in Proceedings of the 35th International Conference on Machine Learning
+            (PMLR, Stockholm, Sweden, 2018), Vol. 80, pp. 2649-2658, 10.48550/arXiv.1802.05983.
         """
         super(Discriminator, self).__init__()
 
@@ -43,7 +45,6 @@ class Discriminator(nn.Module):
         # Layer parameters
         self.z_dim = latent_dim
         self.hidden_units = hidden_units
-        # theoretically 1 with sigmoid but gives bad results => use 2 and softmax
         out_units = 2
 
         # Fully connected layers

@@ -9,6 +9,7 @@ from collections import defaultdict
 from disvae.utils.modelIO import save_model
 from disvae.models.losses import _reconstruction_loss
 
+
 TRAIN_LOSSES_LOGFILE = "train_losses.log"
 
 
@@ -26,7 +27,7 @@ class Trainer():
         Loss function.
 
     epochs: int, optional
-            Number of epochs to train the model for.
+        Maximum number of epochs to train the model.
 
     device: torch.device, optional
         Device on which to run the code.
@@ -37,18 +38,18 @@ class Trainer():
     save_dir : str, optional
         Directory for saving logs.
 
-    gif_visualizer : viz.Visualizer, optional
-        Gif Visualizer that should return samples at every epochs.
+    training_recorder : utils.visualize.TrainingRecorder (optional)
+        Records reconstructions of a selected sample at each epoch.
 
     is_progress_bar: bool, optional
-        Whether to use a progress bar for training.
+        Whether to use progress bar for training.
     """
 
     def __init__(self, model, optimizer, loss_f, epochs,
                  device=torch.device("cpu"),
                  logger=logging.getLogger(__name__),
                  save_dir="results",
-                 gif_visualizer=None,
+                 training_recorder=None,
                  is_progress_bar=True):
 
         self.device = device
@@ -59,11 +60,11 @@ class Trainer():
         self.is_progress_bar = is_progress_bar
         self.logger = logger
         self.losses_logger = LossesLogger(os.path.join(self.save_dir, TRAIN_LOSSES_LOGFILE))
-        self.gif_visualizer = gif_visualizer
+        self.training_recorder = training_recorder
         self.logger.info("Training Device: {}".format(self.device))
         self.epochs = epochs
 
-    def __call__(self, data_loader, cutoff=[8, 8], checkpoint_every=100):
+    def __call__(self, data_loader, cutoff=[16, 16], checkpoint_every=2000):
         """
         Trains the model.
 
@@ -88,8 +89,8 @@ class Trainer():
             self.logger.info('Epoch: {} Average loss per image: {:.2f}'.format(epoch + 1, mean_epoch_loss))
             self.losses_logger.log(epoch, storer)
 
-            if self.gif_visualizer is not None:
-                self.gif_visualizer()
+            if self.training_recorder is not None:
+                self.training_recorder()
 
             if epoch < window_size:
                 window_losses[epoch] = mean_epoch_loss
@@ -113,8 +114,8 @@ class Trainer():
                 save_model(self.model, self.save_dir,
                            filename="model-{}.pt".format(epoch))
 
-        if self.gif_visualizer is not None:
-            self.gif_visualizer.save_reset()
+        if self.training_recorder is not None:
+            self.training_recorder.save_reset()
 
         self.model.eval()
 
@@ -133,12 +134,12 @@ class Trainer():
             Dictionary in which to store important variables for visualization.
 
         epoch: int
-            Epoch number
+            Epoch number.
 
         Return
         ------
         mean_epoch_loss: float
-            Mean loss per image
+            Mean loss per image.
         """
         epoch_loss = 0.
         epoch_recon_loss = 0.
@@ -149,7 +150,6 @@ class Trainer():
                 iter_loss, iter_recon_loss = self._train_iteration(data, storer)
                 epoch_loss += iter_loss
                 epoch_recon_loss += iter_recon_loss
-
                 t.set_postfix(loss=iter_loss)
                 t.update()
 
@@ -164,7 +164,7 @@ class Trainer():
         Parameters
         ----------
         data: torch.Tensor
-            A batch of data. Shape : (batch_size, channel, height, width).
+            A batch of data. Shape: (batch_size, channel, height, width).
 
         storer: dict
             Dictionary in which to store important variables for visualization.
@@ -173,8 +173,8 @@ class Trainer():
 
         try:
             recon_batch, latent_dist, latent_sample = self.model(data)
-            loss = self.loss_f(data, recon_batch, latent_dist, self.model.training,
-                               storer, latent_sample=latent_sample)
+            loss = self.loss_f(data, recon_batch, latent_dist, self.model.training, storer,
+                               latent_sample=latent_sample)
             recon_loss = _reconstruction_loss(data, recon_batch)
             self.optimizer.zero_grad()
             loss.backward()
@@ -189,12 +189,10 @@ class Trainer():
 
 
 class LossesLogger(object):
-    """Class definition for objects to write data to log files in a
-    form which is then easy to be plotted.
-    """
+    """Class for logging losses."""
 
     def __init__(self, file_path_name):
-        """ Create a logger to store information for plotting. """
+        """Create a logger to store information for plotting."""
         if os.path.isfile(file_path_name):
             os.remove(file_path_name)
 
@@ -208,7 +206,7 @@ class LossesLogger(object):
         self.logger.debug(header)
 
     def log(self, epoch, losses_storer):
-        """Write to the log file """
+        """Write to the log file."""
         for k, v in losses_storer.items():
             log_string = ",".join(str(item) for item in [epoch, k, mean(v)])
             self.logger.debug(log_string)

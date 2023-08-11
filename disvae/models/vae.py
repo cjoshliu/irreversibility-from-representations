@@ -7,37 +7,38 @@ from .encoders import get_encoder
 from .decoders import get_decoder
 from disvae.utils.initialization import weights_init
 
-MODELS = ["Burgess"]
+
+MODELS = ['Burgess']
 
 
 def init_specific_model(model_type, img_size, latent_dim):
     """Return an instance of a VAE with encoder and decoder from `model_type`."""
     model_type = model_type.lower().capitalize()
     if model_type not in MODELS:
-        err = "Unknown model_type={}. Possible values: {}"
+        err = 'Unknown model_type={}. Possible values: {}'
         raise ValueError(err.format(model_type, MODELS))
 
     encoder = get_encoder(model_type)
     decoder = get_decoder(model_type)
     model = VAE(img_size, encoder, decoder, latent_dim)
-    model.model_type = model_type  # store to help reloading
+    model.model_type = model_type  #store to help reloading
     return model
 
 
 class VAE(nn.Module):
     def __init__(self, img_size, encoder, decoder, latent_dim):
         """
-        Class which defines model and forward pass.
+        Class to defines model and forward pass.
 
         Parameters
         ----------
         img_size : tuple of ints
-            Size of images. E.g. (1, 32, 32) or (3, 64, 64).
+            Size of images. E.g. (1, 64, 64) or (3, 64, 64).
         """
         super(VAE, self).__init__()
 
-        if list(img_size[1:]) not in [[64, 64], [128, 128]]:
-            raise RuntimeError("{} sized images not supported. Only (x, 64, 64) and (x, 128, 128) supported. Build your own architecture or reshape images!".format(img_size))
+        if list(img_size[1:]) != [64, 64]:
+            raise RuntimeError('Images of size {} not supported. Only images of size (x, 64, 64) supported. Build your own architecture or reshape images!'.format(img_size))
 
         self.latent_dim = latent_dim
         self.img_size = img_size
@@ -56,15 +57,14 @@ class VAE(nn.Module):
             Mean of the normal distribution. Shape (batch_size, latent_dim)
 
         logvar : torch.Tensor
-            Diagonal log variance of the normal distribution. Shape (batch_size,
-            latent_dim)
+            Diagonal log variance of the normal distribution. Shape (batch_size, latent_dim)
         """
         if self.training:
             std = torch.exp(0.5 * logvar)
             eps = torch.randn_like(std)
             return mean + std * eps
         else:
-            # Reconstruction mode
+            # reconstruction mode
             return mean
 
     def forward(self, x):

@@ -1,7 +1,7 @@
-% This function is used to generate the cross parsing label for two trajectories
+% This function cross-parses two trajectories
 
 function cross_parsing = cross_parsing_label(traj_1,traj_2)
-% the input data structure has to be N by m matrix and N is the length
+% input data must be an N by m matrix where N is the length
 
 data_length = length(traj_2);
 cross_parsing = 1;

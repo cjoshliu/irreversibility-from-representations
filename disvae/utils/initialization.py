@@ -17,8 +17,7 @@ def get_activation_name(activation):
 
 
 def get_gain(activation):
-    """Given an object of `torch.nn.modules.activation` or an activation name
-    return the correct gain."""
+    """Given an activation name, return the correct gain."""
     if activation is None:
         return 1
 
@@ -31,11 +30,14 @@ def get_gain(activation):
 
 
 def linear_init(layer, activation="relu"):
-    """Initialize a linear layer.
-    Args:
-        layer (nn.Linear): parameters to initialize.
-        activation (`torch.nn.modules.activation` or str, optional) activation that
-            will be used on the `layer`.
+    """
+    Initialize a linear layer.
+    
+    Parameters
+    ----------
+    layer (nn.Linear): parameters to initialize.
+    activation (`torch.nn.modules.activation` or str, optional):
+        activation to use on the `layer`.
     """
     x = layer.weight
 

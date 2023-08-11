@@ -1,4 +1,4 @@
-% This function is used to generate the label for LZ77 compression algorithm
+% This function generates labels for the LZ77 compression algorithm
 
 function compression = compress_label(traj_whole)
 
