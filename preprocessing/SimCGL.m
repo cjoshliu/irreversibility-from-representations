@@ -24,23 +24,23 @@ for dT  = 0.1
     
     % Calculate derived parameters
     nmax  = round(Tmax/dT);
-    XX      = (L/N)*(-N/2:N/2-1)'; 
+    XX      = (L/N)*(-N/2:N/2-1); 
     [X,Y] = meshgrid(XX);
     
     % Define initial conditions
     rng(s)
-    Tdata = zeros(1,dps+1);
+    Tdata = zeros(1,dps);
     Tdata(1) = 0;
     A = zeros(size(X)) + 10^(-4)*randn(size(X));
     
     % Set wavenumbers
-    k  				 = [0:N/2-1 0 -N/2+1:-1]'*(2*pi/L);
-    k2 				 = k.*k;  
+    k  				 = [0:N/2-1 0 -N/2+1:-1]*(2*pi/L);
+    k2 				 = k.*k;
     k2(N/2+1)        = ((N/2)*(2*pi/L))^2;
-    [k2x,k2y]        = meshgrid(k2); 
+    [k2x,k2y]        = meshgrid(k2);
     del2 			 = k2x+k2y;
-    Adata            = zeros(N,N,dps+1);
-    A_hatdata        = zeros(N,N,dps+1);
+    Adata            = zeros(N,N,dps);
+    A_hatdata        = zeros(N,N,dps);
     A_hat            = fft2(A);
     Adata(:,:,1)     = A;
     A_hatdata(:,:,1) = A_hat;
@@ -70,7 +70,7 @@ for dT  = 0.1
 	    nlAp  = nlA;
 	    
 	    % Save data
-        if nmax-n <= dps
+        if nmax-n < dps
 		    A = ifft2(A_hat);
 		    Adata(:,:,dataindex)     = A; 
 		    A_hatdata(:,:,dataindex) = A_hat; 
@@ -88,7 +88,7 @@ for dT  = 0.1
     disp('Writing file...')
     phi = permute(angle(Adata), [3 1 2]);
     im = uint8((phi+pi).*255/(2*pi));
-    for j = 1:dps+1
+    for j = 1:dps
         imwrite(reshape(im(j, :, :), [64 64]),...
                 strcat(erase(sprintf('c1_%.2f_c2_%.2f_dT_%.2f_s_%d',...
                 c1, c2, dT, s), '.'), '.tif'), 'WriteMode', 'append');

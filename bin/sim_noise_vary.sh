@@ -10,8 +10,8 @@ export CUBLAS_WORKSPACE_CONFIG=:4096:8
 # create result directory if not exist
 mkdir -p results
 
-# train models on simulations varying in timestep size
-for dset in "$DATASET_DIR"/sim_tstep_vary/*
+# train models on simulations varying in noise level 
+for dset in "$DATASET_DIR"/sim_noise_vary/*
 do
 	dset=${dset%*/}
 	cp -r $dset data/cgle64/img_align_cgle64
@@ -21,5 +21,5 @@ done
 
 # save results and clean up
 mkdir -p postprocessing/results
-mv results postprocessing/results/sim_tstep_vary
+mv results postprocessing/results/sim_noise_vary
 mkdir results

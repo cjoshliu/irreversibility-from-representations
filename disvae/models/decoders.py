@@ -19,21 +19,25 @@ class DecoderBurgess(nn.Module):
         Parameters
         ----------
         img_size : tuple of ints
-            Size of images. E.g. (1, 32, 32) or (3, 64, 64).
+            Size of images. E.g. (1, 64, 64) or (3, 64, 64).
 
         latent_dim : int
             Dimensionality of latent output.
 
-        Model Architecture (transposed for decoder)
+        Architecture
         ------------
+        Below transposed for decoder
         - 4 convolutional layers (each with 32 channels), (4 x 4 kernel), (stride of 2)
         - 2 fully connected layers (each of 256 units)
         - Latent distribution:
-            - 1 fully connected layer of 20 units (log variance and mean for 10 Gaussians)
+            - 1 fully connected layer of 4 units (log variance and mean for 2 Gaussians)
 
-        References:
-            [1] Burgess, Christopher P., et al. "Understanding disentangling in
-            $\beta$-VAE." arXiv preprint arXiv:1804.03599 (2018).
+        Reference
+        ---------
+        [1] CP Burgess, I Higgins, L Matthey, N Watters, G Desjardins, and A Lerchner.
+            "Understanding disentangling in $\beta$-VAE,"
+            in Proceedings of the 2017 NIPS Workshop on Learning Disentangled Representations
+            (NeurIPS, Long Beach, CA, 2017), 10.48550/arXiv.1804.03599.
         """
         super(DecoderBurgess, self).__init__()
 
@@ -54,10 +58,6 @@ class DecoderBurgess(nn.Module):
 
         # Convolutional layers
         cnn_kwargs = dict(stride=2, padding=1)
-        # If input image is 128x128 do fourth convolution
-        if self.img_size[1] == self.img_size[2] == 128:
-            self.convT5 = nn.ConvTranspose2d(hid_channels, hid_channels, kernel_size, **cnn_kwargs)
-
         self.convT1 = nn.ConvTranspose2d(hid_channels, hid_channels, kernel_size, **cnn_kwargs)
         self.convT2 = nn.ConvTranspose2d(hid_channels, hid_channels, kernel_size, **cnn_kwargs)
         self.convT3 = nn.ConvTranspose2d(hid_channels, hid_channels, kernel_size, **cnn_kwargs)
@@ -73,12 +73,11 @@ class DecoderBurgess(nn.Module):
         x = x.view(batch_size, *self.reshape)
 
         # Convolutional layers with ReLu activations
-        if self.img_size[1] == self.img_size[2] == 128:
-            x = torch.relu(self.convT5(x))
         x = torch.relu(self.convT1(x))
         x = torch.relu(self.convT2(x))
         x = torch.relu(self.convT3(x))
-        # Sigmoid activation for final conv layer
+        
+        # Sigmoid activation for final convolutional layer
         x = torch.sigmoid(self.convT4(x))
 
         return x

@@ -1,15 +1,15 @@
-import os
-import shutil
-import numpy as np
+import argparse
 import ast
 import configparser
-import argparse
+import numpy as np
+import os
 import random
+import shutil
 import torch
 
 
 def create_safe_directory(directory, logger=None):
-    """Create a directory and archive the previous one if already existed."""
+    """Create a directory and archive the previous one if it already exists."""
     if os.path.exists(directory):
         if logger is not None:
             warn = "Directory {} already exists. Archiving it to {}.zip"
@@ -20,24 +20,17 @@ def create_safe_directory(directory, logger=None):
 
 
 def set_seed(seed):
-    """Set all random seeds."""
+    """Set all randomization seeds."""
     if seed is not None:
         np.random.seed(seed)
         random.seed(seed)
         torch.manual_seed(seed)
-        # if want pure determinism could uncomment below: but slower
-        # torch.backends.cudnn.deterministic = True
+        torch.use_deterministic_algorithms(True)
 
 
 def get_device(is_gpu=True):
-    """Return the correct device"""
-    return torch.device("cuda" if torch.cuda.is_available() and is_gpu
-                        else "cpu")
-
-
-def get_model_device(model):
-    """Return the device on which a model is."""
-    return next(model.parameters()).device
+    """Return the correct device."""
+    return torch.device("cuda" if torch.cuda.is_available() and is_gpu else "cpu")
 
 
 def get_n_param(model):
@@ -47,15 +40,15 @@ def get_n_param(model):
     return nParams
 
 
-def update_namespace_(namespace, dictionnary):
-    """Update an argparse namespace in_place."""
-    vars(namespace).update(dictionnary)
+def update_namespace_(namespace, dictionary):
+    """Update an argparse namespace in place."""
+    vars(namespace).update(dictionary)
 
 
 def get_config_section(filenames, section):
-    """Return a dictionnary of the section of `.ini` config files. Every value
-    int the `.ini` will be literally evaluated, such that `l=[1,"as"]` actually
-    returns a list.
+    """
+    Return a dictionary for a section of `.ini` config files. Every value
+    in the `.ini` will be evaluated literally; e.g., `l=[1,"as"]` returns a list.
     """
     parser = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
     parser.optionxform = str
@@ -69,7 +62,7 @@ def get_config_section(filenames, section):
 
 def check_bounds(value, type=float, lb=-float("inf"), ub=float("inf"),
                  is_inclusive=True, name="value"):
-    """Argparse bound checker"""
+    """Argparse bound checker."""
     value = type(value)
     is_in_bound = lb <= value <= ub if is_inclusive else lb < value < ub
     if not is_in_bound:
@@ -78,12 +71,13 @@ def check_bounds(value, type=float, lb=-float("inf"), ub=float("inf"),
 
 
 class FormatterNoDuplicate(argparse.ArgumentDefaultsHelpFormatter):
-    """Formatter overriding `argparse.ArgumentDefaultsHelpFormatter` to show
+    """
+    Formatter overriding `argparse.ArgumentDefaultsHelpFormatter` to show
     `-e, --epoch EPOCH` instead of `-e EPOCH, --epoch EPOCH`
 
     Note
     ----
-    - code modified from cPython: https://github.com/python/cpython/blob/master/Lib/argparse.py
+    From cPython: https://github.com/python/cpython/blob/master/Lib/argparse.py
     """
 
     def _format_action_invocation(self, action):
@@ -94,11 +88,11 @@ class FormatterNoDuplicate(argparse.ArgumentDefaultsHelpFormatter):
             return metavar
         else:
             parts = []
-            # if the Optional doesn't take a value, format is:
+            # if the option takes no value, format as:
             #    -s, --long
             if action.nargs == 0:
                 parts.extend(action.option_strings)
-            # if the Optional takes a value, format is:
+            # if the option takes a value, format as:
             #    -s ARGS, --long ARGS
             else:
                 default = self._get_default_metavar_for_optional(action)
