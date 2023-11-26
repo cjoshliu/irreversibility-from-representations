@@ -40,5 +40,5 @@ done
 
 # save results and clean up
 mkdir -p postprocessing/results
-mv results postprocessing/results/trend_hyperp_vary
+mv results postprocessing/results/exp_hyperp_vary
 mkdir results
