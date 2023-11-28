@@ -39,41 +39,63 @@ def sample_vals(model, directory):
     """
     metadata = load_metadata(directory)
     dataset = metadata['dataset']
-    dataloader = get_dataloaders(dataset, batch_size=1, shuffle=False,
+    # dataloader = get_dataloaders(dataset, batch_size=1, shuffle=False,
+    #                              root=os.path.join('data', metadata['dataset']))
+    dataloader = get_dataloaders(dataset,
+                                 batch_size=metadata['eval_batchsize'],
+                                 shuffle=False,
                                  root=os.path.join('data', metadata['dataset']))
     device = next(model.parameters()).device
     model.cpu()
     model.eval()
 
-    # pct_errs = []
-    reconstruct_losses = []
-    latent_means = []
-    latent_logvars = []
-
-    for i in range(len(dataloader.dataset)):
-        sample = torch.stack([dataloader.dataset[i][0]], dim=0)
-        # sample = sample.to(sample.device)
-
-        with torch.no_grad(): recon_sample = model(sample)[0]
-        reconstruct_loss = _reconstruction_loss(sample, recon_sample)
-        # sample_pct_err = pct_err(sample, recon_sample)
-        with torch.no_grad(): latent_mean, latent_logvar = model.encoder(sample)
-
-        reconstruct_losses.append(reconstruct_loss.detach().numpy())
-        # pct_errs.append(sample_pct_err.detach().numpy())
-        latent_means.append(latent_mean[0].detach().numpy())
-        latent_logvars.append(latent_logvar[0].detach().numpy())
+    sample = torch.stack([dataloader.dataset[i][0] for i in range(len(dataloader.dataset))], dim=0)
+    with torch.no_grad():
+        recons = model(sample)[0]
+        latent_means, latent_logvars = model.encoder(sample)
+    reconstruct_losses = torch.vmap(_reconstruction_loss)(sample.unsqueeze(1), recons.unsqueeze(1))
 
     np.savetxt(os.path.join(directory, "reconstruct_losses.csv"),
-               np.array(reconstruct_losses), delimiter=",")
-    # np.savetxt(os.path.join(directory, "pct_errs.csv"),
-    #            np.array(pct_errs), delimiter=",")
+               reconstruct_losses.detach().numpy().transpose(),
+               delimiter=",")
     np.savetxt(os.path.join(directory, "latent_means.csv"),
-               np.array(latent_means), delimiter=",")
-    np.savetxt(os.path.join(directory, "latent_logvars.csv"),
-               np.array(latent_logvars), delimiter=",")
-
+               latent_means.detach().numpy(),
+               delimiter=",")
+    np.savetxt(os.path.join(directory, "latent_logvar.csv"),
+               latent_logvars.detach().numpy(),
+               delimiter=",")
+    
     model.to(device)
+
+    # # pct_errs = []
+    # reconstruct_losses = []
+    # latent_means = []
+    # latent_logvars = []
+
+    # for i in range(len(dataloader.dataset)):
+    #     sample = torch.stack([dataloader.dataset[i][0]], dim=0)
+    #     # sample = sample.to(sample.device)
+
+    #     with torch.no_grad(): recon_sample = model(sample)[0]
+    #     reconstruct_loss = _reconstruction_loss(sample, recon_sample)
+    #     # sample_pct_err = pct_err(sample, recon_sample)
+    #     with torch.no_grad(): latent_mean, latent_logvar = model.encoder(sample)
+
+    #     reconstruct_losses.append(reconstruct_loss.detach().numpy())
+    #     # pct_errs.append(sample_pct_err.detach().numpy())
+    #     latent_means.append(latent_mean[0].detach().numpy())
+    #     latent_logvars.append(latent_logvar[0].detach().numpy())
+
+    # np.savetxt(os.path.join(directory, "reconstruct_losses.csv"),
+    #            np.array(reconstruct_losses), delimiter=",")
+    # # np.savetxt(os.path.join(directory, "pct_errs.csv"),
+    # #            np.array(pct_errs), delimiter=",")
+    # np.savetxt(os.path.join(directory, "latent_means.csv"),
+    #            np.array(latent_means), delimiter=",")
+    # np.savetxt(os.path.join(directory, "latent_logvars.csv"),
+    #            np.array(latent_logvars), delimiter=",")
+
+    # model.to(device)
 
 
 def save_model(model, directory, metadata=None, filename=MODEL_FILENAME):
