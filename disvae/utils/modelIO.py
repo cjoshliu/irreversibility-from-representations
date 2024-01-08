@@ -61,7 +61,7 @@ def sample_vals(model, directory):
     np.savetxt(os.path.join(directory, "latent_means.csv"),
                latent_means.detach().numpy(),
                delimiter=",")
-    np.savetxt(os.path.join(directory, "latent_logvar.csv"),
+    np.savetxt(os.path.join(directory, "latent_logvars.csv"),
                latent_logvars.detach().numpy(),
                delimiter=",")
     
