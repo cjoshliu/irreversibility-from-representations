@@ -7,7 +7,7 @@ imageio==2.31.1
 scikit-image==0.21.0
 pandas==2.0.3
 seaborn==0.12.2
-pillow==10.2.0
+pillow==10.3.0
 tqdm==4.65.0
 jupyter==1.0.0
 ipykernel==6.24.0
