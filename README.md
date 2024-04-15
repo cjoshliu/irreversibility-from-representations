@@ -146,7 +146,7 @@ options:
 ```
 
 ## Postprocess
-Use `postprocessing/kld_compression_lipschitz.m` to estimate irreversibilities from model latent means and training videos using a Ziv-Merhav estimator.
+Use `postprocessing/kld_rescale_compress.m` to estimate irreversibilities from model latent means and training videos using a Ziv-Merhav estimator.
 Change paths at the top of the script to estimate irreversibility for a selected result.
 The ruler is provided in [`raw_data`](https://doi.org/10.5281/zenodo.7734339).
 
