@@ -1,7 +1,8 @@
 close all; clear all; clc
 
 %% Change these based on which experiment you are analyzing
-latent_path = '/path/to/latent_means.csv';
+latent_mean_path = '/path/to/latent_means.csv';
+latent_logvar_path = '/path/to/latent_logvars.csv';
 image_path = '/path/to/phase_field_video.tif';
 ruler_path = '/path/to/ruler.tif';
 save_path = '/dir/to/save/zm/estimates/';
@@ -10,7 +11,9 @@ coarse_para = 1; % coarse-graining kernel size
 parsed_length = 10000; % maximum length to parse
 
 %% Load the latent file
-latents = readmatrix(latent_path);
+latents_means = readmatrix(latent_mean_path);
+latents_logvars = readmatrix(latent_logvar_path);
+latents = latents_means ./ sqrt(exp(latents_logvars));
 total_datalength = length(latents);
 
 %% Transform the phase field image into its complex-exponentiated form
