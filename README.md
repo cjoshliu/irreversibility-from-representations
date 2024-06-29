@@ -157,4 +157,4 @@ Each script in `bin` runs a predefined experiment and saves to `postprocessing/r
 * `sim_tstep_vary.sh`, `sim_noise_vary.sh`, `sim_regime_vary.sh`: Main simulation results, varying timestep, measurement noise, and CGL regime, respectively.
 * `exp_atp_vary.sh`, `exp_orderp_vary.sh`: Main experiment results, varying metabolic depletion and Rho pattern stability, respectively.
 * `sim_hyperp_vary.sh`, `exp_hyperp_vary.sh`: Results used for hyperparameter tuning.
-* `regime_pool.sh`, `sim_z_vary.sh`, `exp_rot_vary.sh`: Additional results used in supplemental materials.
+* `regime_pool.sh`, `sim_z_vary.sh`, `exp_rot_vary.sh`, `vary_near_critical.sh`: Additional results used in supplemental materials.
